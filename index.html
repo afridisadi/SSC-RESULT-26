@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSC Result 2026 — Ujangram Secondary School</title>
+<style>
+:root{
+  --bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#667085;--line:#e5e7eb;
+  --primary:#6d28d9;--primary2:#8b5cf6;--good:#15803d;--bad:#dc2626;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.header{background:linear-gradient(135deg,#111827,#4c1d95);color:white;padding:34px 20px}
+.wrap{max-width:1100px;margin:auto}
+.brand{font-size:30px;font-weight:800}
+.sub{opacity:.85;margin-top:6px}
+.developer{font-size:12px;opacity:.65;margin-top:3px}
+
+.tabs{display:flex;gap:8px;margin-top:22px;flex-wrap:wrap}
+.tab{padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:white;font-weight:600;font-size:14px;cursor:pointer;transition:.15s}
+.tab:hover{background:rgba(255,255,255,.18)}
+.tab.active{background:white;color:var(--primary)}
+
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 5px 18px rgba(0,0,0,.04)}
+.num{font-size:27px;font-weight:800}
+.label{color:var(--muted);font-size:13px;margin-top:4px}
+
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+input,select{padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:white;font-size:14px;outline:none}
+input{flex:1;min-width:220px}
+table{width:100%;border-collapse:collapse;background:white;border-radius:16px;overflow:hidden}
+th,td{padding:14px 12px;border-bottom:1px solid var(--line);text-align:left}
+th{background:#fafafa;font-size:13px;color:var(--muted)}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-weight:700;font-size:12px;background:#ede9fe;color:#5b21b6}
+.fail{background:#fee2e2;color:#b91c1c}
+.groupbadge{display:inline-block;padding:3px 9px;border-radius:999px;font-weight:600;font-size:11px;background:#eef2ff;color:#4338ca}
+.empty{padding:35px;text-align:center;color:var(--muted)}
+.footer{text-align:center;color:var(--muted);padding:30px 10px;font-size:13px}
+
+@media(max-width:800px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  table{font-size:13px}
+  th:nth-child(1),td:nth-child(1){display:none}
+}
+@media(max-width:500px){
+  .grid{grid-template-columns:1fr 1fr}
+  .brand{font-size:24px}
+  th,td{padding:11px 8px}
+  th:nth-child(2),td:nth-child(2){display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="wrap">
+    <div class="brand">🎓 SSC Result</div>
+    <div class="developer">Developer: Afridi Sadi</div>
+    <div class="sub">Ujangram Secondary School • SSC 2026</div>
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-group="">All Groups</div>
+      <div class="tab" data-group="Science">Science</div>
+      <div class="tab" data-group="Business Studies">Business Studies</div>
+      <div class="tab" data-group="Humanities">Humanities</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="grid">
+    <div class="card"><div class="num" id="total">0</div><div class="label">Total Students</div></div>
+    <div class="card"><div class="num" id="aPlus">0</div><div class="label">A+ Students</div></div>
+    <div class="card"><div class="num" id="passed">0</div><div class="label">Passed</div></div>
+    <div class="card"><div class="num" id="failed">0</div><div class="label">Failed</div></div>
+  </section>
+
+  <section class="card">
+    <div class="controls">
+      <input id="search" placeholder="🔎 Search student name or roll...">
+      <select id="grade">
+        <option value="">All Grades</option>
+        <option>A+</option><option>A</option><option>A-</option><option>B</option><option>C</option><option>D</option><option>F</option>
+      </select>
+      <select id="gender">
+        <option value="">All Gender</option>
+        <option value="Male">♂️ Male</option>
+        <option value="Female">♀️ Female</option>
+      </select>
+      <select id="sort">
+        <option value="default">Default order</option>
+        <option value="high">GPA: High → Low</option>
+        <option value="low">GPA: Low → High</option>
+      </select>
+    </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>#</th><th>Roll</th><th>Full Name</th><th>Group</th><th>Gender</th><th>GPA</th><th>Grade</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">© 2026 Afridi Edu • Student Result Portal</footer>
+
+<script>
+const students = [{"roll": 126163, "name": "SAMIA ISLAM SAFA", "gpa": "5.00", "grade": "A+", "gender": "Female", "group": "Science"}, {"roll": 126164, "name": "JANNATUL MAOYA KHUSHBO", "gpa": "5.00", "grade": "A+", "gender": "Female", "group": "Science"}, {"roll": 126165, "name": "MST. RAISA KHATUN", "gpa": "5.00", "grade": "A+", "gender": "Female", "group": "Science"}, {"roll": 126166, "name": "SADIA SULTANA MIM", "gpa": "4.78", "grade": "A", "gender": "Female", "group": "Science"}, {"roll": 126167, "name": "AFIA SAIARA KAJOL", "gpa": "5.00", "grade": "A+", "gender": "Female", "group": "Science"}, {"roll": 126168, "name": "ETI KHATUN", "gpa": "4.67", "grade": "A", "gender": "Female", "group": "Science"}, {"roll": 126169, "name": "MST. RUKAYA SIDDIQUE", "gpa": "5.00", "grade": "A+", "gender": "Female", "group": "Science"}, {"roll": 126170, "name": "AFIYA ZAHAN TASNIM", "gpa": "4.72", "grade": "A", "gender": "Female", "group": "Science"}, {"roll": 126171, "name": "SAMI AFRIN MEGHA", "gpa": "3.89", "grade": "A-", "gender": "Female", "group": "Science"}, {"roll": 126172, "name": "MST. RIYA AKTAR", "gpa": "3.78", "grade": "A-", "gender": "Female", "group": "Science"}, {"roll": 126173, "name": "MST. SHATHIFA YESMIN", "gpa": "3.94", "grade": "A-", "gender": "Female", "group": "Science"}, {"roll": 126174, "name": "MISKATUL ZAHAN MOU", "gpa": "3.67", "grade": "A-", "gender": "Female", "group": "Science"}, {"roll": 126175, "name": "MST. SURAIYA KHATUN SOKHI", "gpa": "2.72", "grade": "C", "gender": "Female", "group": "Science"}, {"roll": 126176, "name": "MST. JANNATUL FERDOUS", "gpa": "5.00", "grade": "A+", "gender": "Female", "group": "Science"}, {"roll": 126177, "name": "JANNATUL MUNTAHA", "gpa": "5.00", "grade": "A+", "gender": "Female", "group": "Science"}, {"roll": 126178, "name": "MST. AYESHA KHATUN", "gpa": "4.83", "grade": "A", "gender": "Female", "group": "Science"}, {"roll": 126179, "name": "MOHONA AKTER", "gpa": "4.17", "grade": "A", "gender": "Female", "group": "Science"}, {"roll": 126180, "name": "MST. SALMA ANIK FARIHA", "gpa": "5.00", "grade": "A+", "gender": "Female", "group": "Science"}, {"roll": 126181, "name": "MST. RADIA KHATUN RIMI", "gpa": "4.28", "grade": "A", "gender": "Female", "group": "Science"}, {"roll": 126182, "name": "MST. SHOBNOM SHAFA", "gpa": "4.72", "grade": "A", "gender": "Female", "group": "Science"}, {"roll": 126183, "name": "MST. NODI KHATUN", "gpa": "3.50", "grade": "A-", "gender": "Female", "group": "Science"}, {"roll": 126184, "name": "RAMISHA ANAM RAFA", "gpa": "Absent", "grade": "F/Abst", "gender": "Female", "group": "Science"}, {"roll": 126185, "name": "DISHA SHARMA ANANTI", "gpa": "3.44", "grade": "B", "gender": "Female", "group": "Science"}, {"roll": 126186, "name": "SABIKUN NAHAR NUR", "gpa": "3.67", "grade": "A-", "gender": "Female", "group": "Science"}, {"roll": 126187, "name": "SURAIYA SHITHI", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Science"}, {"roll": 126188, "name": "MST. BELY KHATUN", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Science"}, {"roll": 126189, "name": "MST. CHADNI KHATUN", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Science"}, {"roll": 126190, "name": "SURAIYA KHATUN", "gpa": "4.39", "grade": "A", "gender": "Female", "group": "Science"}, {"roll": 126191, "name": "AFSANA MIMI", "gpa": "4.17", "grade": "A", "gender": "Female", "group": "Science"}, {"roll": 126192, "name": "MST. TONNI KHATUN", "gpa": "F2", "grade": "F", "gender": "Female", "group": "Science"}, {"roll": 126193, "name": "MST. SUMAIYA AKTAR RIKTA", "gpa": "4.33", "grade": "A", "gender": "Female", "group": "Science"}, {"roll": 126194, "name": "JANNATUL", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Science"}, {"roll": 126195, "name": "MST. TANZINA TABASSUM TUSI", "gpa": "Abst", "grade": "F/Abst", "gender": "Female", "group": "Science"}, {"roll": 126196, "name": "MUSHKAN JAHAN", "gpa": "4.22", "grade": "A", "gender": "Female", "group": "Science"}, {"roll": 126197, "name": "MST. MAHABUBA MUNNI RANI", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Science"}, {"roll": 126198, "name": "MD. HASAN MAHMUD RUDRO", "gpa": "5.00", "grade": "A+", "gender": "Male", "group": "Science"}, {"roll": 126199, "name": "AL RAFI", "gpa": "4.89", "grade": "A", "gender": "Male", "group": "Science"}, {"roll": 126200, "name": "MAHI IMTAIZ", "gpa": "4.61", "grade": "A", "gender": "Male", "group": "Science"}, {"roll": 126201, "name": "MD. SAHED ISLAM", "gpa": "5.00", "grade": "A+", "gender": "Male", "group": "Science"}, {"roll": 126202, "name": "SREE HIMALOY KUMAR", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Science"}, {"roll": 126203, "name": "MD. ABU JAHED", "gpa": "4.39", "grade": "A", "gender": "Male", "group": "Science"}, {"roll": 126204, "name": "MD. ABDUR RAHMAN", "gpa": "3.83", "grade": "A-", "gender": "Male", "group": "Science"}, {"roll": 126205, "name": "MD. AKASH AHMED", "gpa": "3.61", "grade": "A-", "gender": "Male", "group": "Science"}, {"roll": 126206, "name": "TANJIM ISLAM", "gpa": "4.50", "grade": "A", "gender": "Male", "group": "Science"}, {"roll": 126207, "name": "MD. RAKIBUL ISLAM NIROB", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Science"}, {"roll": 126208, "name": "MD. SAIMOON ISLAM SAZZAD", "gpa": "3.33", "grade": "B", "gender": "Male", "group": "Science"}, {"roll": 126209, "name": "MD. TUTUL BISHWAS", "gpa": "4.11", "grade": "A", "gender": "Male", "group": "Science"}, {"roll": 126210, "name": "MD. AL MAYEZED PAVEL", "gpa": "3.72", "grade": "A-", "gender": "Male", "group": "Science"}, {"roll": 126211, "name": "NISHAD AHMED", "gpa": "3.67", "grade": "A-", "gender": "Male", "group": "Science"}, {"roll": 126212, "name": "TANBIN RANA SAKIN", "gpa": "3.89", "grade": "A-", "gender": "Male", "group": "Science"}, {"roll": 126213, "name": "SOUROV", "gpa": "3.72", "grade": "A-", "gender": "Male", "group": "Science"}, {"roll": 126214, "name": "MD. EYAMIN ISLAM", "gpa": "3.28", "grade": "B", "gender": "Male", "group": "Science"}, {"roll": 126215, "name": "MD. NAIMUR HASAN NAHID", "gpa": "3.94", "grade": "A-", "gender": "Male", "group": "Science"}, {"roll": 126216, "name": "MD. TAMIM ISLAM", "gpa": "3.89", "grade": "A-", "gender": "Male", "group": "Science"}, {"roll": 126217, "name": "TAMIM IKBAL", "gpa": "3.44", "grade": "B", "gender": "Male", "group": "Science"}, {"roll": 126218, "name": "YEAMIN", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Science"}, {"roll": 126219, "name": "MD NIROB ISLAM", "gpa": "F", "grade": "F/Abst", "gender": "Male", "group": "Science"}, {"roll": 126220, "name": "AFRIDI MUSRAT SADI", "gpa": "4.28", "grade": "A", "gender": "Male", "group": "Science"}, {"roll": 126221, "name": "TAZIM AHSAN", "gpa": "F", "grade": "F", "gender": "Male", "group": "Science"}, {"roll": 126222, "name": "MAMUNUR RASHID", "gpa": "3.28", "grade": "B", "gender": "Male", "group": "Science"}, {"roll": 409383, "name": "MST. JUI", "gpa": "4.67", "grade": "A", "gender": "Female", "group": "Business Studies"}, {"roll": 409384, "name": "MST. UPOMA KHATUN", "gpa": "3.67", "grade": "A-", "gender": "Female", "group": "Business Studies"}, {"roll": 409385, "name": "MST ARIFA KHATUN", "gpa": "F2", "grade": "F", "gender": "Female", "group": "Business Studies"}, {"roll": 409386, "name": "MST. ASIYA KHATUN", "gpa": "F2", "grade": "F", "gender": "Female", "group": "Business Studies"}, {"roll": 409387, "name": "PRIONTI", "gpa": "F2", "grade": "F", "gender": "Female", "group": "Business Studies"}, {"roll": 409388, "name": "MST. PAYEL KHATUN", "gpa": "4.11", "grade": "A", "gender": "Female", "group": "Business Studies"}, {"roll": 409389, "name": "AFCSHANA HAQUE EMA", "gpa": "3.33", "grade": "B", "gender": "Female", "group": "Business Studies"}, {"roll": 409390, "name": "MOHONA AKTER RITHI", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Business Studies"}, {"roll": 409391, "name": "MD. ALL SANY", "gpa": "3.39", "grade": "B", "gender": "Male", "group": "Business Studies"}, {"roll": 409392, "name": "MD. SUIEB ALI", "gpa": "F2", "grade": "F", "gender": "Male", "group": "Business Studies"}, {"roll": 255205, "name": "MST. RANI KHATUN", "gpa": "3.28", "grade": "B", "gender": "Female", "group": "Humanities"}, {"roll": 255206, "name": "MST. URMI AKTAR EVA", "gpa": "2.50", "grade": "C", "gender": "Female", "group": "Humanities"}, {"roll": 255207, "name": "MST AFROZA ISLAM", "gpa": "F2", "grade": "F", "gender": "Female", "group": "Humanities"}, {"roll": 255208, "name": "MST. LAMIYA KHATUN", "gpa": "3.94", "grade": "A-", "gender": "Female", "group": "Humanities"}, {"roll": 255209, "name": "MST. FATEMA KHATUN", "gpa": "3.67", "grade": "A-", "gender": "Female", "group": "Humanities"}, {"roll": 255210, "name": "MST. PAPIYA KHATUN", "gpa": "2.78", "grade": "C", "gender": "Female", "group": "Humanities"}, {"roll": 255211, "name": "MST. SHRABONI KHATUN", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Humanities"}, {"roll": 255212, "name": "MST. KHADIZA EASMIN MYMUNA", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Humanities"}, {"roll": 255213, "name": "MST. SUMAIYA AKTER MIM", "gpa": "3.28", "grade": "B", "gender": "Female", "group": "Humanities"}, {"roll": 255214, "name": "ONTARA KHATUN", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Humanities"}, {"roll": 255215, "name": "MST. DITHI KHATUN", "gpa": "F2", "grade": "F", "gender": "Female", "group": "Humanities"}, {"roll": 255216, "name": "MST. SURAIYA KHATUN", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Humanities"}, {"roll": 255217, "name": "MST. NUPUR KHATUN", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Humanities"}, {"roll": 255218, "name": "MST. TRISHA KHATUN", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Humanities"}, {"roll": 255219, "name": "MST. JANNATUL FERDOUSI KHATUN", "gpa": "5.00", "grade": "A+", "gender": "Female", "group": "Humanities"}, {"roll": 255220, "name": "MST. RUBAIYA AKTAR AKHI", "gpa": "4.06", "grade": "A", "gender": "Female", "group": "Humanities"}, {"roll": 255221, "name": "MST. KHADIJA AFRIN ROTNA", "gpa": "4.00", "grade": "A", "gender": "Female", "group": "Humanities"}, {"roll": 255222, "name": "KUMARI SANJITA", "gpa": "F2", "grade": "F", "gender": "Female", "group": "Humanities"}, {"roll": 255223, "name": "RITU BORNA", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Humanities"}, {"roll": 255224, "name": "MST. ROZONI KHATUN", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Humanities"}, {"roll": 255225, "name": "MST. SURAIYA AKTAR", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Humanities"}, {"roll": 255226, "name": "MST. MAKSINA KHATUN", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Humanities"}, {"roll": 255227, "name": "MST. ANONNA KHATUN", "gpa": "3.44", "grade": "B", "gender": "Female", "group": "Humanities"}, {"roll": 255228, "name": "MST. MORIYOM AKTAR NITU", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Humanities"}, {"roll": 255229, "name": "MST. SABINA KHATUN", "gpa": "3.56", "grade": "A-", "gender": "Female", "group": "Humanities"}, {"roll": 255230, "name": "MST. FARJAHANA AKTAR BITHI", "gpa": "2.78", "grade": "C", "gender": "Female", "group": "Humanities"}, {"roll": 255231, "name": "FARZANA YASMIN", "gpa": "3.06", "grade": "B", "gender": "Female", "group": "Humanities"}, {"roll": 255232, "name": "MST. ORTHI KHATUN", "gpa": "2.72", "grade": "C", "gender": "Female", "group": "Humanities"}, {"roll": 255233, "name": "MST. MASURA KHATUN", "gpa": "2.89", "grade": "C", "gender": "Female", "group": "Humanities"}, {"roll": 255234, "name": "KUMARI TITHI BISWAS", "gpa": "F1", "grade": "F", "gender": "Female", "group": "Humanities"}, {"roll": 255235, "name": "MST. ANNIKA KHATUN", "gpa": "2.83", "grade": "C", "gender": "Female", "group": "Humanities"}, {"roll": 255236, "name": "MST. SIMA KHATUN", "gpa": "2.44", "grade": "C", "gender": "Female", "group": "Humanities"}, {"roll": 255237, "name": "RUBAIA RINVI RUMPA", "gpa": "2.17", "grade": "C", "gender": "Female", "group": "Humanities"}, {"roll": 255238, "name": "MD.MIJANUR RAHMAN", "gpa": "2.94", "grade": "C", "gender": "Male", "group": "Humanities"}, {"roll": 255239, "name": "TONMOY AHAMED", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255240, "name": "MOHIT BISWAS", "gpa": "2.72", "grade": "C", "gender": "Male", "group": "Humanities"}, {"roll": 255241, "name": "MD. ASHIK AHAMED", "gpa": "2.00", "grade": "C", "gender": "Male", "group": "Humanities"}, {"roll": 255242, "name": "MD. MEHEDI HASAN", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255243, "name": "MD. KONOK", "gpa": "2.72", "grade": "C", "gender": "Male", "group": "Humanities"}, {"roll": 255244, "name": "ALHAZ SALAM", "gpa": "2.44", "grade": "C", "gender": "Male", "group": "Humanities"}, {"roll": 255245, "name": "MD. RASEL AHMED SOMRAT", "gpa": "F2", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255246, "name": "SHAKIB AL HASAN", "gpa": "2.44", "grade": "C", "gender": "Male", "group": "Humanities"}, {"roll": 255247, "name": "MD. MAHIM HOSSAIN", "gpa": "Fail", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255248, "name": "MIRAJ ISLAM", "gpa": "Fail", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255249, "name": "NISHAN", "gpa": "2.56", "grade": "C", "gender": "Male", "group": "Humanities"}, {"roll": 255250, "name": "MD. LIKHON AHAMMED", "gpa": "2.17", "grade": "C", "gender": "Male", "group": "Humanities"}, {"roll": 255251, "name": "MD. IMON HOSSAIN", "gpa": "Fail", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255252, "name": "MD. RATUL HOSSAIN", "gpa": "F2", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255253, "name": "MD. RIMON ISLAM", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255254, "name": "MD. NUR ALAM", "gpa": "F2", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255255, "name": "MD. SOJIB ISLAM", "gpa": "Fail", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255256, "name": "MD. TAMIM HASAN", "gpa": "Fail", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255257, "name": "MD. SHAKIB HASSAN KONOK", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255258, "name": "SIYAM ALI", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255259, "name": "MD. YASIN ARAFAT", "gpa": "F2", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255260, "name": "RASEL HOSSEN", "gpa": "2.94", "grade": "C", "gender": "Male", "group": "Humanities"}, {"roll": 255261, "name": "RAFI", "gpa": "Absent", "grade": "F/Abst", "gender": "Male", "group": "Humanities"}, {"roll": 255262, "name": "MD. SHOHAG HOSSAIN", "gpa": "F2", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255263, "name": "SHRI JOY KUMAR BISWAS", "gpa": "3.00", "grade": "B", "gender": "Male", "group": "Humanities"}, {"roll": 255264, "name": "MD. MILTON MUNSI", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255265, "name": "MD. EHSANUL HAQUE ABIR", "gpa": "2.17", "grade": "C", "gender": "Male", "group": "Humanities"}, {"roll": 255266, "name": "MD. MANIK HOSSAIN", "gpa": "F2", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255267, "name": "MD. SARTHOK HASAN", "gpa": "3.50", "grade": "A-", "gender": "Male", "group": "Humanities"}, {"roll": 255268, "name": "MD. SHAMIM AHAMMAD", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255269, "name": "MD. JUNAID SIDDIK", "gpa": "2.61", "grade": "C", "gender": "Male", "group": "Humanities"}, {"roll": 255270, "name": "MD. RAKIBUL ISLAM", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255271, "name": "MD.YEASIN HABIB KOLLOL", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255272, "name": "SAHED HASAN", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255273, "name": "ABIR ALI SHEIKH", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255274, "name": "TISHAN", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255275, "name": "MD. SIAM SADHONA", "gpa": "F2", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255276, "name": "MD. SAKIBUL ISLAM", "gpa": "2.94", "grade": "C", "gender": "Male", "group": "Humanities"}, {"roll": 255277, "name": "MD. ABU BAKAR SIDDIK", "gpa": "F2", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255278, "name": "MD. RASHED", "gpa": "F2", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255279, "name": "MD. RONI", "gpa": "F1", "grade": "F", "gender": "Male", "group": "Humanities"}, {"roll": 255280, "name": "MD. JIHAD AHMMED SHUV", "gpa": "Absent", "grade": "F/Abst", "gender": "Male", "group": "Humanities"}];
+
+const tbody = document.getElementById('tbody');
+const search = document.getElementById('search');
+const gradeSel = document.getElementById('grade');
+const genderSel = document.getElementById('gender');
+const sortSel = document.getElementById('sort');
+const tabs = document.querySelectorAll('.tab');
+
+let activeGroup = "";
+
+const numeric = s => parseFloat(s.gpa) || -1;
+
+function currentScope(){
+  return activeGroup ? students.filter(s => s.group === activeGroup) : students;
+}
+
+function render(){
+  const scope = currentScope();
+  let list = scope.filter(s =>
+    (s.name.toLowerCase().includes(search.value.toLowerCase()) || String(s.roll||'').includes(search.value)) &&
+    (!gradeSel.value || (gradeSel.value === 'F' ? s.grade.startsWith('F') : s.grade === gradeSel.value)) &&
+    (!genderSel.value || s.gender === genderSel.value)
+  );
+  if (sortSel.value === 'high') list.sort((a,b) => numeric(b) - numeric(a));
+  if (sortSel.value === 'low') list.sort((a,b) => numeric(a) - numeric(b));
+
+  tbody.innerHTML = list.length ? list.map((s,i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td>${s.roll ?? '—'}</td>
+      <td><b>${s.name}</b></td>
+      <td><span class="groupbadge">${s.group}</span></td>
+      <td>${s.gender ? (s.gender === 'Male' ? '♂️ Male' : '♀️ Female') : '—'}</td>
+      <td>${s.gpa}</td>
+      <td><span class="badge ${s.grade.startsWith('F') ? 'fail' : ''}">${s.grade}</span></td>
+    </tr>`).join('') : `<tr><td colspan="7" class="empty">No student found</td></tr>`;
+
+  document.getElementById('total').textContent = scope.length;
+  document.getElementById('aPlus').textContent = scope.filter(s => s.grade === 'A+').length;
+  document.getElementById('failed').textContent = scope.filter(s => s.grade.startsWith('F')).length;
+  document.getElementById('passed').textContent = scope.length - scope.filter(s => s.grade.startsWith('F')).length;
+}
+
+tabs.forEach(tab => tab.addEventListener('click', () => {
+  tabs.forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  activeGroup = tab.dataset.group;
+  render();
+}));
+
+[search, gradeSel, genderSel, sortSel].forEach(x => x.addEventListener('input', render));
+render();
+</script>
+</body>
+</html>
